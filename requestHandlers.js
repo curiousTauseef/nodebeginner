@@ -1,4 +1,5 @@
-var querystring = require("querystring");
+var querystring = require("querystring"),
+fs = require("fs");
 
 function start(response, postData) {
 	console.log("Request handler 'start' was called.");
@@ -24,12 +25,19 @@ function start(response, postData) {
 
 function upload(response, postData) {
 	console.log("Request handler 'upload' was called.");
-	response.writeHead(200, {"Content-Type":"text/plain"});
-	response.write("You've sent:" +
+	response.writeHead(200, {"Content-Type": "text/plain"});
+	response.write("You've sent the text: "+
 		querystring.parse(postData).text);
-	response.end();
+		response.end();
+}
+
+function show(response) {
+	console.log("Request handler 'show' was called.");
+	response.writeHead(200, {"Content-Type": "image/png"});
+	fs.createReadStream("./tmp/piano-players.gif").pipe(response);
 }
 
 exports.start = start;
 exports.upload = upload;
+exports.show = show;
 
